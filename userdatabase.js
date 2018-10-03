@@ -47,6 +47,14 @@ module.exports = {
   clear: function() {
 
   },
+  updateAttempt: function(username, level) {
+
+
+    //find username
+      //if not find, then attempt is 1, else increment
+    //set best = level
+    //update the database
+  },
   help: function() {
 		// whatever
 	}

@@ -1,18 +1,9 @@
-/*
-npm install express
-npm install body-parser
-npm install cookie-parser
-npm install js-sizeof
-*/
-
-
 var express = require('express');
 var bodyParser = require('body-parser')
 var cookieParser = require('cookie-parser');
 
 var https = require('https')
-var fs = require('fs');
-
+var fs = require('fs')
 
 var logger = require('./logger');
 var headers = require('./headers');
@@ -21,18 +12,15 @@ var head = require('./head');
 var foot = require('./foot');
 
 var forms = require('./forms');
-var utils = require('./utils');
 
 var userdatabase = require('./userdatabase');
 
 var app = express();
 app.set('port', 3000);
-//app.use(express.static(__dirname + '/'));
 
 app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
 
 var httpsOptions = {
   key: fs.readFileSync('./ca/server-key.pem'),
@@ -50,6 +38,35 @@ var server = https.createServer(httpsOptions, app).listen(app.get('port'), () =>
 })
 
 
+var queue = [];
+
+
+function renderQueue() {
+
+  var content = '<div class="column left"><b>Queue</b><br>';
+    for (var i = 0; i < queue.length; i++) {
+      content += queue[i];
+      content += '<br>';
+    }
+  content += '<br>';
+  content += '<br>';
+  content += forms.addtoqueue.get();
+  content += '</div>';
+  return content;
+}
+
+
+function renderLeaderBoard() {
+
+  var content = '<div class="column right"><b>Leader Board</b><br>';
+    for (var i = 0; i < queue.length; i++) {
+      content += queue[i];
+      content += '<br>';
+    }
+  content += '</div>';
+  return content;
+}
+
 
 /**
 *	https://localhost.ssl:3000/
@@ -57,11 +74,7 @@ var server = https.createServer(httpsOptions, app).listen(app.get('port'), () =>
 app.get('/', function(req, res) {
   logger.info('***** home page');
 
-  var content = '<b>YAVA :: Queue</b>';
-  content += '<b>Leader Board</b>';
-  content +=   getForm(req, res, 'Add Attempt Form', forms.addattemptform);
-
-  sendResponse(req, res, 'Home Page', content);
+  sendResponse(req, res, 'hackalot challenge');
 });
 
 /**
@@ -80,50 +93,39 @@ app.get('/nuke', function(req, res) {
 
 /**
 *
-*	parse add attempt form
-*	https://localhost:3000/addattempt
+*	parse add to queue form
+*	https://localhost:3000/addtoqueue
 *
 */
-app.post('/addattempt', function(req, res) {
+app.post('/addtoqueue', function(req, res) {
   logger.info('***** post forgotten');
 
   var content = 'Adding: ' + req.body.username;
 
-  userdatabase.addAttempt(req.body.username);
-
-  sendResponse(req, res, 'Add Attempt Reponse', content);
+  //userdatabase.updateAttempt(req.body.username);
+  queue.push(req.body.username);
+  //sendResponse(req, res, 'Add Attempt Reponse', content);
+  res.redirect('/');
 });
 
 
 
-
-/**
-*	https://localhost.ssl:3000/addattemptform
-*/
-app.get('/addattemptform', function(req, res) {
-  getForm(req, res, 'Add Attempt Form', forms.addattemptform);
-});
-
-function getForm(req, res, title, form) {
-  logger.trace('***** fetch form: ' + title);
-
-  sendResponse(req, res, title, form.get());
-}
-
-
-function sendResponse(req, res, title, content) {
+function sendResponse(req, res, title) {
   logger.info('***** sendResponse');
 
   headers.set(res);
 
   var response = head.get(title);
 
-  response += '<br><br><div id="content">';
-  response += content;
-  response += '<div>';
+  response += '<H1>sir hackalot challenge</H1>';
+  response += '<div class="row">';
+  response += renderQueue();
+  response += renderLeaderBoard();
+  response += '</div>';
 
   response += foot.get();
 
   res.send(response);
 }
+
 

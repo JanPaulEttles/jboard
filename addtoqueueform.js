@@ -6,7 +6,7 @@ var fragment = '';
 
 var count = 0;
 var lineReader = require('readline').createInterface({
-	input: require('fs').createReadStream('addattemptform.template')
+	input: require('fs').createReadStream('addtoqueueform.template')
 });
 
 lineReader.on('line', function (line) {
@@ -14,7 +14,7 @@ lineReader.on('line', function (line) {
   fragment += line;
 });
 lineReader.on('close', function (line) {
-  logger.trace('read ' + count + ' lines for addattemptform.template');
+  logger.trace('read ' + count + ' lines for addtoqueueform.template');
 });
 
 module.exports = {

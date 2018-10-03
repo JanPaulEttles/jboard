@@ -1,7 +1,0 @@
-    <form action="/addattempt" name="addattempt" method="post">
-			<fieldset>
-				<label for="username">Username : </label>
-				<input type="username" id="username" name="username" placeholder="Enter Username" />
-				<input type="submit" id="addattempt" name="submitaddattempt" value="addattempt" />
-			</fieldset>
-		</form>

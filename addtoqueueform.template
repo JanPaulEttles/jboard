@@ -1,0 +1,7 @@
+    <form action="/addtoqueue" name="addtoqueue" method="post">
+			<fieldset>
+				<!-- <label for="username">Username : </label> -->
+				<input type="username" id="username" name="username" placeholder="Enter Username" />
+				<input type="submit" id="addtoqueue" name="submitaddtoqueue" value="Add" />
+			</fieldset>
+		</form>
