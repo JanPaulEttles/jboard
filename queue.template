@@ -1,0 +1,85 @@
+
+<div class="column left"><b>Queue</b><br><br>
+  <div class="wrap">
+    <table id="queue">
+      <thead>
+        <tr>
+          <th colspan="2">username</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td><input type="username" id="username" name="username" placeholder="Enter Username"/></td>
+          <td><input type="submit" id="addtoqueue" name="submitaddtoqueue" value="Add"/></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    $('#username').keypress(function(event) {
+      if(event.which == 13) {
+        addToQueue();
+        return false;
+      }
+    });
+
+    $("#addtoqueue").click(function() {
+      addToQueue();
+      return false;
+    });
+  });
+
+  function addToQueue() {
+    $.ajax({
+      type: 'GET',
+      url: 'https://localhost.ssl:3000/addtoqueue',
+      data: {
+        username: $('#username').val()
+      },
+      success: function(data) {
+        $('#username').val('');
+        renderQueue(data);
+      }
+    });
+  }
+
+  function removeFromQueue(username) {
+    $.ajax({
+      type: 'GET',
+      url: 'https://localhost.ssl:3000/removefromqueue',
+      data: {
+        username: username
+      },
+      success: function(data) {
+        renderQueue(data);
+      }
+    });
+  }
+
+  function removeThisFromQueue(cell) {
+    removeFromQueue($('td:first', $(cell).parents('tr')).text());
+  }
+
+  function renderQueue(queue) {
+    console.log('rendering queue');
+
+    var content = '';
+    for (var i = 0; i < queue.length; i++) {
+      content += '<tr>';
+      content += '<td>' + queue[i] + '</td>';
+      content += '<td class="delete" onclick="removeThisFromQueue(this);">X</td>';
+      content += '</tr>';
+    }
+
+    $('#queue tbody tr').remove();
+    $('#queue tbody').append(content);
+
+    reloadLeaderBoard();
+  }
+</script>
+

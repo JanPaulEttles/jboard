@@ -1,0 +1,112 @@
+<html>
+  <head>
+		<title>test</title>
+		<script src="/static/jquery-3.3.1.min.js"></script>
+
+  <body>
+
+<div><b>Queue</b>
+  <div id="queue">
+  </div>
+</div>
+
+<!--<form action="/addtoqueue" name="addtoqueue" method="post">-->
+  <fieldset>
+    <!-- <label for="username">Username : </label> -->
+    <input type="username" id="username" name="username" placeholder="Enter Username" />
+    <input type="submit" id="addtoqueue" name="submitaddtoqueue" value="Add" />
+  </fieldset>
+<!--</form>-->
+
+
+<script>
+
+
+  $(document).ready(function() {
+    $('#username').keypress(function(event) {
+      if(event.which == 13) {
+        makeRequest();
+        return false;
+      }
+    });
+
+    $("#addtoqueue").click(function() {
+      makeRequest();
+      return false;
+    });
+});
+
+
+
+    function makeRequest() {
+        $.ajax({
+            type: "GET",
+            url: 'https://localhost.ssl:3000/addtoqueue',
+            data: {
+                username: $("#username").val(),
+                poop: $("#username").val()
+            },
+            success: function() {
+              var q = [];
+              q.push('sdfsdf');
+             // renderQueue(q);
+              alert('ping');
+              ping();
+
+            }
+        });
+  }
+
+    function ping() {
+   alert('pong');
+  }
+  /*
+  function makeRequest() {
+        $.ajax({
+            type: "GET",
+            url: 'https://localhost.ssl:3000/addtoqueue',
+            data: {
+                username: $("#username").val(),
+                poop: $("#username").val()
+            },
+            success: function() {
+              alert('ping');
+              ping();
+            }
+        });
+
+  }
+  */
+
+  /*
+
+$(document).ready(function() {
+  $('#addtoqueue').click(function(event) {
+  alert(1);
+
+   event.preventDefault(event);
+
+    $.ajax({
+      url:  'https://localhost.ssl:3000/addtoqueue',
+      type: 'GET',
+      data: {
+        username: $('#username').val();
+      },
+      success: function( resp ) {
+        var q = [];
+        q.push('sdfsdf');
+        console.log( 'yay' );
+      },
+      error: function( req, status, err ) {
+        console.log( 'something went wrong', status, err );
+      }
+    });
+  });
+});
+
+*/
+    </script>
+
+
+  </body>
+</html>

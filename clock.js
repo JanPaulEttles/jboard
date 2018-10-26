@@ -6,15 +6,16 @@ var fragment = '';
 
 var count = 0;
 var lineReader = require('readline').createInterface({
-	input: require('fs').createReadStream('addtoqueueform.template')
+	input: require('fs').createReadStream('clock.template')
 });
 
 lineReader.on('line', function (line) {
   count++;
   fragment += line;
+  fragment += '\n';
 });
 lineReader.on('close', function (line) {
-  logger.trace('read ' + count + ' lines for addtoqueueform.template');
+  logger.trace('read ' + count + ' lines for clock template');
 });
 
 module.exports = {

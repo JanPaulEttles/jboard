@@ -1,0 +1,17 @@
+<div class="clock-centre"><div class="clock"></div></div>
+
+<script type="text/javascript">
+
+
+  var clock = new FlipClock($('.clock'), 300, {
+		countdown: true,
+		clockFace: 'MinuteCounter',
+    callbacks: {
+      stop: function() {
+        alert('time is up');
+      }
+    }
+	});
+
+
+</script>

@@ -12,6 +12,7 @@ var lineReader = require('readline').createInterface({
 lineReader.on('line', function (line) {
   count++;
   fragment += line;
+  fragment += '\n';
 });
 lineReader.on('close', function (line) {
   logger.trace('read ' + count + ' lines for head template');

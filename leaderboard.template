@@ -1,0 +1,83 @@
+<div class="column right"><b>Leader Board</b><br><br>
+  <div class="wrap">
+    <table id="leaderboard">
+      <thead>
+        <tr>
+          <th>username</th><th>attempts</th><th>challenges</th><th></th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+      <tfoot>
+      </tfoot>
+    </table>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    reloadLeaderBoard();
+  });
+
+  function reloadLeaderBoard() {
+    getLeaderBoard();
+  }
+
+  function getLeaderBoard() {
+    $.ajax({
+      type: 'GET',
+      url: 'https://localhost.ssl:3000/getleaderboard',
+      success: function(data) {
+      renderLeaderBoard(data);
+      }
+    });
+  }
+
+  function removeFromLeaderBoard(username) {
+    $.ajax({
+      type: 'GET',
+      url: 'https://localhost.ssl:3000/removefromleaderboard',
+      data: {
+        username: username
+      },
+      success: function(data) {
+        renderQueue(data);
+      }
+    });
+  }
+
+  function removeThisFromLeaderBoard(cell) {
+    removeFromLeaderBoard($('td:first', $(cell).parents('tr')).text());
+  }
+
+  function renderLeaderBoard(leaderboard) {
+    console.log('rendering leaderboard');
+
+    var content ='';
+    for(var i = 0; i < leaderboard.length; ++i) {
+      var user = JSON.parse(leaderboard[i]);
+
+      content += '<tr>';
+      content += '<td>' + user.username + '</td>';
+      content += '<td>' + user.attempts + '</td>';
+      content += '<td>';
+
+      for(var j = 0; j < user.results.length; ++j) {
+        if(user.results[j].result == 1) {
+          content += '<img src="/static/ticked.png" alt="Passed" height="42" width="42">'
+        }
+        else {
+          content += '<img src="/static/unticked.png" alt="Not Passed" height="42" width="42">'
+        }
+      }
+
+      content += '</td>';
+      content += '<td class="delete" onclick="removeThisFromLeaderBoard(this);">X</td>';
+      content += '</tr>';
+    }
+
+
+    $('#leaderboard tbody tr').remove();
+    $('#leaderboard tbody').append(content);
+  }
+</script>

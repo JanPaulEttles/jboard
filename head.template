@@ -1,6 +1,11 @@
 <html>
   <head>
 		<title>{title}</title>
+ 		<link rel="stylesheet" href="/static/flipclock.css">
+		<script src="/static/jquery-3.3.1.min.js"></script>
+		<script src="/static/flipclock.min.js"></script>
+
+
     <style>
     .row {
       padding: 20px;
@@ -10,22 +15,105 @@
       float: left;
       padding: 20px;
       height: 300px;
+       width: 100%;
     }
     .left {
       flex: 30%;
+
     }
     .right {
       flex: 70%;
     }
-  </style>
+    .flex-container {
+      display: flex;
+    }
 
-	<head>
+table {
+  border:1px solid grey;
+  border-collapse:separate;
+  border-spacing: 2px;
+   width: 100%;
+}
+
+
+th {
+  padding: 1em;
+  border:1px;
+  text-align: left;
+}
+
+td {
+  padding: 1em;
+  border:1px;
+  text-align: left;
+}
+
+
+.clock-centre {
+     margin: 0 auto;
+     width: 320px;
+}
+
+
+.wrap {
+  display: flex;
+  width: 100%;
+}
+
+.wrap table {
+  flex:1;
+}
+
+.tab {
+  width: 100%;
+  border:none;
+}
+
+.tab .headerleft {
+  width: 20%;
+  padding: 1em;
+  text-align: left;
+  border:none;
+}
+
+.tab .headercentre {
+  width: 40%;
+  padding: 1em;
+  font-size: 2.3rem;
+  text-align: left;
+  font-family: arial;
+  font-weight: bold;
+  border:none;
+}
+
+.tab .headerright {
+  width: 40%;
+  padding: 1em;
+  text-align: right;
+  border:none;
+}
+
+.delete {
+  text-align:center;
+  font-family: arial;
+  color: red;
+  font-weight: bold;
+}
+
+
+
+  </style>
+	</head>
   <body>
-  <div>
-  	<a href="/">Home</a> ||
-    <a href="/clearQueue">Clear Queue</a> ||
-    <a href="/clearLeaderBoard">Clear Leader Board</a>
-  </div>
-  <br>
-  <br>
-  <br>
+  <table class="tab" cellspacing="0" cellpadding="0" border="0">
+  <tr>
+    <td class="headerleft"><img src="/static/cyber-security-logo.png" alt="Cyber Security" height="100" width="100" style="padding:16px;"></td>
+    <td class="headercentre">Sir Hackalot Challenge</td>
+  <!--  <td class="headerright"><a href="/">Home</a> || <a href="/clearQueue">Clear Queue</a> || <a href="/clearLeaderBoard">Clear Leader Board</a></td> -->
+  </tr>
+  </table>
+
+
+
+
+

@@ -10,3 +10,8 @@ npm install express
 npm install body-parser
 npm install cookie-parser
 npm install js-sizeof
+
+
+
+Each contestant gets two minutes to get as far as they can.
+After two minutes, the
