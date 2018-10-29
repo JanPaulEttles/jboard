@@ -94,10 +94,12 @@ td {
 }
 
 .delete {
+  font-size: 1.8rem;
   text-align:center;
   font-family: arial;
   color: red;
   font-weight: bold;
+  cursor: pointer;
 }
 
 
@@ -107,7 +109,7 @@ td {
   <body>
   <table class="tab" cellspacing="0" cellpadding="0" border="0">
   <tr>
-    <td class="headerleft"><img src="/static/cyber-security-logo.png" alt="Cyber Security" height="100" width="100" style="padding:16px;"></td>
+    <td class="headerleft"><img src="/static/cyber-security-logo.png" alt="Cyber Security" height="128" width="128" style="padding:32px;"></td>
     <td class="headercentre">Sir Hackalot Challenge</td>
   <!--  <td class="headerright"><a href="/">Home</a> || <a href="/clearQueue">Clear Queue</a> || <a href="/clearLeaderBoard">Clear Leader Board</a></td> -->
   </tr>

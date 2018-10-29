@@ -10,8 +10,8 @@ var logger = require('./logger');
 var headers = require('./headers');
 
 var components = require('./components');
-
 var userdatabase = require('./userdatabase');
+var ssh = require('./ssh');
 
 var app = express();
 app.set('port', 3000);
@@ -56,8 +56,10 @@ app.get('/', function(req, res) {
 });
 
 /**
+*
 * reset everything - todo
 *	https://localhost.ssl:3000/nuke
+*
 */
 app.get('/nuke', function(req, res) {
   logger.info('***** get nuke BOOOOOOM!!!');
@@ -68,18 +70,62 @@ app.get('/nuke', function(req, res) {
   res.redirect('/');
 });
 
-app.get('/update', function(req, res) {
-  logger.info('***** get ');
+
+var dirty = false;
+/**
+*
+*	https://localhost.ssl:3000/heartbeat
+*
+*/
+app.get('/heartbeat', function(req, res) {
+  logger.info('***** heartbeart');
+
+  var status = 200;
+  if(dirty === true) {
+    status = 418;
+  }
+  res.sendStatus(status);
+
+});
 
 
-  //req.query.username
 
-  //remove from queue
-  //update leaderboard
+/**
+*
+*	https://localhost.ssl:3000/timesup
+*
+*/
+app.get('/timesup', function(req, res) {
+  logger.info('***** times up');
 
-  userdatabase.addAttempt(req.query.username, req.query.step);
 
-  res.redirect('/');
+});
+
+/**
+*
+*	https://localhost.ssl:3000/flagcaptured?username=username&flag=0
+*
+*/
+app.get('/flagcaptured', function(req, res) {
+
+  logger.info('***** flag capture:' + req.query.username + '  ' + req.query.flag);
+
+  //do some update and set the dirty flag
+  dirty = true;
+
+  res.sendStatus(200);
+});
+
+/**
+*
+* doesn't need any parameters, it assumes that the current person in the queue trigger the trap
+*	https://localhost.ssl:3000/boobytrap
+*
+*/
+app.get('/boobytrap', function(req, res) {
+  logger.info('***** booby trap');
+
+
 });
 
 
@@ -94,6 +140,18 @@ app.get('/update', function(req, res) {
 
 
 
+
+/**
+*
+*	update to queue
+*	https://localhost.ssl:3000/reloadqueue
+*
+*/
+app.get('/reloadqueue', function(req, res) {
+  logger.info('***** reload queue: ');
+  dirty = false;
+  res.send(queue);
+});
 
 
 
@@ -177,7 +235,7 @@ function addToQueue(username) {
   queue.push(username);
 
   //add a new user to the DB is one does not already exist
-  addToLeaderBoard(username);
+  addUser(username);
 
   return queue;
 }
@@ -202,11 +260,14 @@ function getLeaderBoard() {
 
 
 //not called directly
-function addToLeaderBoard(username) {
+function addUser(username) {
   logger.info('***** add to leader board: ' + username);
 
-  //add a new user to the DB is one does not already exist
-  userdatabase.addUser(username);
+  if(!userdatabase.exists(username)) {
+    //add a new user to the DB is one does not already exist
+    userdatabase.addUser(username);
+    ssh.addUser(username);
+  }
 }
 
 
@@ -225,7 +286,10 @@ function removeFromLeaderBoard(username) {
 
 /*
 
-https://localhost.ssl:3000/addtoqueue?username=
+curl --insecure 'https://localhost.ssl:3000/flagcaptured?username=username&flag=0'
+
+
+curl --insecure 'https://localhost.ssl:3000/addtoqueue?username=asdasdasdasd'
 https://localhost.ssl:3000/removefromqueue?username=
 
 https://localhost.ssl:3000/updateattempt?username=&step=

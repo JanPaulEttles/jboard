@@ -80,7 +80,15 @@ module.exports = {
       module.exports.saveDatabase();
     }
   },
- 	deleteUser: function(username) {
+ 	isUser: function(username) {
+    var exists = true;
+
+    if(db.get(username) === null) {
+      exists = false;
+    }
+    return exists;
+  },
+  deleteUser: function(username) {
     var user = db.get(username);
 
     if(user !== null) {
@@ -89,7 +97,6 @@ module.exports = {
       module.exports.saveDatabase();
     }
   },
-
   getUser: function(username) {
     logger.debug('fetching username : ' + username);
 

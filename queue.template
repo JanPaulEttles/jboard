@@ -20,7 +20,30 @@
 </div>
 
 <script>
+
+
+  function poll() {
+    setTimeout( function() {
+      $.ajax({
+        type: 'GET',
+        url: 'https://localhost.ssl:3000/heartbeat',
+        statusCode: {
+          200: function() {
+            poll();
+          },
+          418:function(){
+            reloadQueue();
+            poll();
+          }
+        }
+      });
+    }, 1000);
+  }
+
   $(document).ready(function() {
+
+    poll();
+
     $('#username').keypress(function(event) {
       if(event.which == 13) {
         addToQueue();
@@ -63,6 +86,16 @@
 
   function removeThisFromQueue(cell) {
     removeFromQueue($('td:first', $(cell).parents('tr')).text());
+  }
+
+  function reloadQueue() {
+    $.ajax({
+      type: 'GET',
+      url: 'https://localhost.ssl:3000/reloadQueue',
+      success: function(data) {
+        renderQueue(data);
+      }
+    });
   }
 
   function renderQueue(queue) {
