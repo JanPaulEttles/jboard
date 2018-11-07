@@ -51,12 +51,6 @@ function createChallenges() {
       { "id" : "1", "result" : "0" },
       { "id" : "2", "result" : "0" },
       { "id" : "3", "result" : "0" },
-      { "id" : "4", "result" : "0" },
-      { "id" : "5", "result" : "0" },
-      { "id" : "6", "result" : "0" },
-      { "id" : "7", "result" : "0" },
-      { "id" : "8", "result" : "0" },
-      { "id" : "9", "result" : "0" }
     ];
 }
 
@@ -100,9 +94,17 @@ module.exports = {
   getUser: function(username) {
     logger.debug('fetching username : ' + username);
 
+
     var user = db.get(username);
+
+    if(user === undefined) {
+      logger.debug('user: ' + username + ' is undefined');
+    }
+
+
     if(user === null) {
       logger.debug('username : ' + username + ' not found');
+      return null;
     }
     else {
       logger.debug(user);
@@ -125,20 +127,21 @@ module.exports = {
       wstream.write('');
       wstream.end();
   },
-  updateAttempt: function(username, level) {
-    var user = db.get(username);
+  incrementAttempts: function(username) {
+    var user = module.exports.getUser(username);
     if(user !== null) {
-
-
-      //update attempts
       user.attempts++;
-
-      //update result
+      module.exports.putUser(user);
+      module.exports.saveDatabase();
+    }
+  },
+  updateResult: function(username, level) {
+    var user = module.exports.getUser(username);
+    if(user !== null) {
       if(level <= user.results.length) {
-        user.results[level] = 1;
+        user.results[level].result = 1;
       }
-
-      //save db
+      module.exports.putUser(user);
       module.exports.saveDatabase();
     }
   },

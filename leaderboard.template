@@ -15,22 +15,18 @@
 </div>
 
 <script>
-  $(document).ready(function() {
-    reloadLeaderBoard();
-  });
 
-  function reloadLeaderBoard() {
-    getLeaderBoard();
-  }
-
-  function getLeaderBoard() {
-    $.ajax({
-      type: 'GET',
-      url: 'https://localhost.ssl:3000/getleaderboard',
-      success: function(data) {
-      renderLeaderBoard(data);
-      }
-    });
+  function reloadLeaderBoard(event) {
+    console.log('reload leader board: ' + event);
+    if(event === 'reload') {
+      $.ajax({
+        type: 'GET',
+        url: 'https://localhost.ssl:3000/getleaderboard',
+        success: function(data) {
+          renderLeaderBoard(data);
+        }
+      });
+    }
   }
 
   function removeFromLeaderBoard(username) {
@@ -39,9 +35,6 @@
       url: 'https://localhost.ssl:3000/removefromleaderboard',
       data: {
         username: username
-      },
-      success: function(data) {
-        renderQueue(data);
       }
     });
   }
@@ -75,7 +68,6 @@
       content += '<td class="delete" onclick="removeThisFromLeaderBoard(this);">X</td>';
       content += '</tr>';
     }
-
 
     $('#leaderboard tbody tr').remove();
     $('#leaderboard tbody').append(content);

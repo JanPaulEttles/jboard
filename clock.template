@@ -1,17 +1,65 @@
-<div class="clock-centre"><div class="clock"></div></div>
+<div class="clock-centre">
+  <div class="clock"></div>
+</div>
 
 <script type="text/javascript">
 
+  var clock;
 
-  var clock = new FlipClock($('.clock'), 300, {
-		countdown: true,
-		clockFace: 'MinuteCounter',
-    callbacks: {
-      stop: function() {
-        alert('time is up');
+  $(document).ready(function() {
+    clock = new FlipClock($('.clock'), 0, {
+      countdown: true,
+      clockFace: 'MinuteCounter',
+      callbacks: {
+        stop: function() {
+          $.ajax({
+            type: 'GET',
+            url: 'https://localhost.ssl:3000/timerstopped'
+          });
+        }
       }
+    });
+});
+
+  function reloadClock(event) {
+    console.log('clock:' + event);
+
+    switch(event) {
+      case 'prepare': {
+        clock.setTime(5);
+        clock.start();
+        $.ajax({
+          type: 'GET',
+          url: 'https://localhost.ssl:3000/timerpreparing'
+        });
+        break;
+      }
+      case 'start': {
+        clock.setTime(10);
+        clock.start();
+        $.ajax({
+          type: 'GET',
+          url: 'https://localhost.ssl:3000/timerrunning'
+        });
+        break;
+      }
+      case 'stop': {
+        clock.stop();
+        $.ajax({
+          type: 'GET',
+          url: 'https://localhost.ssl:3000/timesup'
+        });
+        break;
+      }
+      default:
+        //nothing;
     }
-	});
+  }
+
+
 
 
 </script>
+
+
+

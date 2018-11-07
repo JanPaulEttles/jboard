@@ -1,0 +1,38 @@
+flow 1 : add a user to the queue
+
+  add user to the queue
+  add user to the database, if not already there
+  add user to the attacker machine, if not already there
+
+  reload the queue
+  reload the leaderboard
+  if the first user in the queue, then start the clock, else let the clock run
+
+
+flow 2: remove a user from the queue
+
+  remove user form the queue
+
+
+flow 3: remove user from the leaderboard
+
+  remove user from the leaderboard
+  remove user from the queue
+  remove user from the attacker machine
+
+flow 4:
+
+
+flow 5:
+
+
+flow 6:
+
+
+flow 7:
+
+
+flow 8:
+
+
+flow 9:

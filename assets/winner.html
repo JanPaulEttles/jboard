@@ -1,0 +1,38 @@
+
+
+
+
+<html>
+  <head>
+		<title>test winner</title>
+<script src="/static/jquery-3.3.1.min.js"></script>
+    <body>
+<style>
+</style>
+  <script>
+  $(document).ready(function() {
+    $('#cup').css({'height' : '80%'});
+    $('#cup').css({'top': '100px'});
+
+    var cock = $(window).width() / 2 - $('#cup').width() / 2;
+    $('#cup').css({'left': cock, 'z-index': 10});
+
+    var balls = $(window).width() / 2 - $('#logo').width() / 2;
+    $('#logo').css({'left': balls, 'z-index': 20});
+
+    var sack = $('#cup').width() / 2 - 150;
+    $('#logo').css({'top': sack});
+
+
+  });
+
+  </script>
+
+</head>
+
+<body>
+  <img style="position: absolute" src="/static/winner.png" id="cup">
+  <img style="position: absolute" src="/static/cyber-security-logo.png" id="logo">
+</body>
+</html>
+

@@ -103,10 +103,88 @@ td {
 }
 
 
+.imgcontainer {
+    max-width: 80%;
+    height: 500px;
+    margin: 35px auto;
+    border: 1px dashed #ccc;
+    padding: 20px;
+    background: whitesmoke;
+}
+
+.imgflex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
   </style>
+
+  <script type="text/javascript">
+
+    $(document).ready(function() {
+      //start the heartbeat
+      heartbeat();
+    });
+
+    function heartbeat() {
+      setTimeout( function() {
+        $.ajax({
+          type: 'GET',
+          url: 'https://localhost.ssl:3000/heartbeat',
+          success: function(data) {
+
+if(data.winner === 'chicken') {
+    document.getElementById("winnercup").style.display = "block";
+    document.getElementById("winnerlogo").style.display = "block";
+}
+else {
+  document.getElementById("winnercup").style.display = "none";
+  document.getElementById("winnerlogo").style.display = "none";
+}
+            reloadClock(data.clock);
+            reloadQueue(data.queue);
+            reloadLeaderBoard(data.leaderboard);
+
+            heartbeat();
+          }
+        });
+      }, 1000);
+    }
+
+  </script>
+
+
+<script type="text/javascript">
+
+  $(document).ready(function() {
+
+    document.getElementById("winnercup").style.display = "none";
+    document.getElementById("winnerlogo").style.display = "none";
+
+    $('#winnercup').css({'height' : '80%'});
+    $('#winnercup').css({'top': '100px'});
+
+    var cock = $(window).width() / 2 - $('#winnercup').width() / 2;
+    $('#winnercup').css({'left': cock, 'z-index': 10});
+
+    var balls = $(window).width() / 2 - $('#winnerlogo').width() / 2;
+    $('#winnerlogo').css({'left': balls, 'z-index': 20});
+
+    var sack = $('#winnercup').width() / 2 - 150;
+    $('#winnerlogo').css({'top': sack});
+
+  });
+
+</script>
+
+
 	</head>
   <body>
+
+  <img style="position: absolute" src="/static/winner.png" id="winnercup">
+  <img style="position: absolute" src="/static/cyber-security-logo.png" id="winnerlogo">
+
   <table class="tab" cellspacing="0" cellpadding="0" border="0">
   <tr>
     <td class="headerleft"><img src="/static/cyber-security-logo.png" alt="Cyber Security" height="128" width="128" style="padding:32px;"></td>
